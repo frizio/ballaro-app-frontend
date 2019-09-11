@@ -1,0 +1,14 @@
+<section>
+    <form fxLayout="column" fxLayoutAlign="center center"
+          #userInfo="ngForm" (ngSubmit)="onSubmit(userInfo)">
+        <mat-form-field>
+            <input matInput type="text" placeholder="Product"
+                   ngModel name="product" #productInput="ngModel">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="City"
+                   ngModel name="city" #cityInput="ngModel">
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">Search</button>
+    </form>
+</section>
