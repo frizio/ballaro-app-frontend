@@ -1,1 +1,22 @@
-<p>sidenav-list works!</p>
+<mat-nav-list>
+    <a mat-list-item routerLink="/map" (click)="sidenav.close()">
+        <mat-icon>map</mat-icon>
+        <span class="nav-caption">Map</span>
+    </a>
+    <a mat-list-item routerLink="/about" (click)="sidenav.close()">
+        <mat-icon>people</mat-icon>
+        <span class="nav-caption">About Us</span>
+    </a>
+    <a mat-list-item routerLink="/credits" (click)="sidenav.close()">
+        <mat-icon>info</mat-icon>
+        <span class="nav-caption">Credits</span>
+    </a>
+<!--
+    <mat-list-item>
+        <button mat-icon-button (click)="sidenav.close()">
+            <mat-icon>eject</mat-icon>
+            <span class="nav-caption">Logout</span>
+        </button>
+    </mat-list-item>
+-->
+</mat-nav-list>
