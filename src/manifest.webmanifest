@@ -1,6 +1,6 @@
 {
-  "name": "ballaro-app-frontend",
-  "short_name": "ballaro-app-frontend",
+  "name": "Ballaro",
+  "short_name": "ballaro",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
