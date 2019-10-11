@@ -10,6 +10,9 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidenavListComponent } from './components/navigation/sidenav-list/sidenav-list.component';
 import { SearchComponent } from './components/search/search.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +28,8 @@ import { SearchComponent } from './components/search/search.component';
     AppRoutingModule,
     MaterialModule,
     FlexLayoutModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
