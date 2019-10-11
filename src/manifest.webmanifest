@@ -1,7 +1,7 @@
 {
   "name": "Ballaro",
-  "short_name": "ballaro",
-  "theme_color": "#1976d2",
+  "short_name": "Ballaro",
+  "theme_color": "#572057",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
