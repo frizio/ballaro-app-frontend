@@ -9,7 +9,6 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/navigation/header/header.component';
 import { SidenavListComponent } from './components/navigation/sidenav-list/sidenav-list.component';
-import { SearchComponent } from './components/search/search.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
@@ -19,8 +18,7 @@ import { environment } from '../environments/environment';
     AppComponent,
     HeaderComponent,
     SidenavListComponent,
-    routingComponents,
-    SearchComponent
+    routingComponents
   ],
   imports: [
     BrowserModule,
