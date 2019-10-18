@@ -1,5 +1,10 @@
 <div class="map"
      leaflet
      [leafletOptions]="options"
-     [leafletLayersControl]="layersControl">
+     [leafletLayersControl]="layersControl"
+     (leafletMapReady)="onMapReady($event)"
+     (leafletClick)="onMapClick($event)"
+     (leafletMapMove)="onMapMove()"
+     (leafletMapZoom)="onMapZoom()"
+     >
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { tileLayer, latLng, marker, icon } from 'leaflet';
+import { tileLayer, latLng, marker, icon, Map } from 'leaflet';
 
 @Component({
   selector: 'app-main-map',
@@ -7,6 +7,8 @@ import { tileLayer, latLng, marker, icon } from 'leaflet';
   styleUrls: ['./main-map.component.css']
 })
 export class MainMapComponent implements OnInit {
+
+  theMap: Map;
 
   // Define our base layers so we can reference them multiple times
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -58,6 +60,24 @@ export class MainMapComponent implements OnInit {
   };
 
   ngOnInit() {
+  }
+
+  onMapReady(map: Map) {
+    console.log('Callback metodo onMapReady');
+    this.theMap = map;
+  }
+
+  onMapClick(infoClick: any) {
+    console.log('Callback metodo onMapClick()');
+    console.log(infoClick);
+  }
+
+  onMapMove() {
+    console.log('Callback metodo onMapMove()');
+  }
+
+  onMapZoom() {
+    console.log('Callback metodo onMapZoom()');
   }
 
 }
