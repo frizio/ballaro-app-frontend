@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { tileLayer, latLng, marker, icon } from 'leaflet';
 
-declare var ol: any;
-
 @Component({
   selector: 'app-main-map',
   templateUrl: './main-map.component.html',
@@ -47,17 +45,19 @@ export class MainMapComponent implements OnInit {
       'Wikimedia Maps': this.wMaps
     },
     overlays: {
-      'My Home': this.home
+      'My Home': this.home,
+      'I Mercati': this.home,
+      'I Porti': this.home,
     }
   };
 
   options = {
     layers: [ this.streetMaps ],
-    zoom: 11,
+    zoom: 8,
     center: latLng([38.088, 13.155])
   };
-  ngOnInit(): void {
-    
+
+  ngOnInit() {
   }
 
 }
