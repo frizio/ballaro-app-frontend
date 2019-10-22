@@ -8,13 +8,11 @@ import { SwUpdate } from '@angular/service-worker';
 })
 export class AppComponent implements OnInit {
 
-  currentLocation = {};
-
   constructor(
     private swUpdate: SwUpdate
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     if ( this.swUpdate.isEnabled ) {
       this.swUpdate.available.subscribe(
         () => {
@@ -25,44 +23,24 @@ export class AppComponent implements OnInit {
       );
     }
 
-    const currentPosition = await this.getCurrentPosition();
-    this.currentLocation = {
-      latitude: currentPosition.coords.latitude,
-      longitude: currentPosition.coords.longitude
-    };
+    // Usato solamente per richiedere l'accesso alla posizione all'apertura dell'app
+    this.getLocation();
   }
 
-  getCurrentPosition(options = {}): Promise<Position> {
-    return new Promise(
-      () => {
-        navigator.geolocation.getCurrentPosition(this.resolvePosition, this.rejectPosition, options);
-      }
-    );
-  }
 
-  private resolvePosition(position: Position) {
-    if (position) {
-      const location = {
-          longitude: position.coords.longitude,
-          latitude: position.coords.latitude
-      };
-      // console.log(position);
-      // console.log(location);
+  private getLocation() {
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.onLocationFound, this.onLocationError);
+    } else {
+        console.log('Geo Location not supported by browser');
     }
   }
-
-  private rejectPosition(error: any) {
-    console.log(error);
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            return 'User denied the request for Geolocation.';
-        case error.POSITION_UNAVAILABLE:
-            return 'Location information is unavailable.';
-        case error.TIMEOUT:
-            return 'The request to get user location timed out.';
-        case error.UNKNOWN_ERROR:
-            return 'An unknown error occurred.';
-    }
+  private onLocationFound(event: any) {
+    console.log(event);
+  }
+  private onLocationError(event: any) {
+    alert(event.message);
   }
 
 }

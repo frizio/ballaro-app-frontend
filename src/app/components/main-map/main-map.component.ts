@@ -10,6 +10,8 @@ export class MainMapComponent implements OnInit {
 
   theMap: Map;
 
+  currentLocation = {};
+
   // Define our base layers so we can reference them multiple times
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                           {
@@ -59,8 +61,49 @@ export class MainMapComponent implements OnInit {
     center: latLng([38.088, 13.155])
   };
 
-  ngOnInit() {
+  async ngOnInit() {
+    console.log('Map ngOnInit');
+    const currentPosition = await this.getCurrentPosition();
+    this.currentLocation = {
+      latitude: currentPosition.coords.latitude,
+      longitude: currentPosition.coords.longitude
+    };
+    console.log(this.currentLocation);
+ }
+
+  getCurrentPosition(options = {}): Promise<Position> {
+    return new Promise(
+      () => {
+        navigator.geolocation.getCurrentPosition(this.resolvePosition, this.rejectPosition, options);
+      }
+    );
   }
+
+  private resolvePosition(position: Position) {
+    if (position) {
+      const location = {
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude
+      };
+      // console.log(position);
+      // console.log(location);
+    }
+  }
+
+  private rejectPosition(error: any) {
+    console.log(error);
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            return 'User denied the request for Geolocation.';
+        case error.POSITION_UNAVAILABLE:
+            return 'Location information is unavailable.';
+        case error.TIMEOUT:
+            return 'The request to get user location timed out.';
+        case error.UNKNOWN_ERROR:
+            return 'An unknown error occurred.';
+    }
+  }
+
 
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
