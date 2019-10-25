@@ -12,6 +12,7 @@ import { SidenavListComponent } from './components/navigation/sidenav-list/siden
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MaterialModule,
     FlexLayoutModule,
     FormsModule,
+    HttpClientModule,
     LeafletModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
