@@ -136,10 +136,12 @@ export class MainMapComponent implements OnInit {
       {
         icon: icon(
           {
-            iconSize: [ 25, 41 ],
-            iconAnchor: [ 13, 41 ],
-            iconUrl: 'leaflet/marker-icon.png',
-            shadowUrl: 'leaflet/marker-shadow.png'
+            iconUrl: 'assets/leaflet-color-markers/img/marker-icon-green.png',
+            shadowUrl: 'assets/leaflet-color-markers/img/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
           }
         )
       }
