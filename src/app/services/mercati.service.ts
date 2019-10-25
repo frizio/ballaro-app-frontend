@@ -14,7 +14,7 @@ export class MercatiService {
     private http: HttpClient
   ) {  }
 
-  getProducts(): Observable<Mercati[]> {
+  getMercati(): Observable<Mercati[]> {
     return this.http.get<Mercati[]>(`${this.BASE_URL}/product`);
   }
 }
