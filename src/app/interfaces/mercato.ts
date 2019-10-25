@@ -1,4 +1,4 @@
-export interface Mercati {
+export interface Mercato {
     osmid?: number;
     comune: string;
     provincia: string;

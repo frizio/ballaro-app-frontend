@@ -1,4 +1,4 @@
-import { Mercati } from './../interfaces/mercati';
+import { Mercato } from '../interfaces/mercato';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -14,7 +14,7 @@ export class MercatiService {
     private http: HttpClient
   ) {  }
 
-  getMercati(): Observable<Mercati[]> {
-    return this.http.get<Mercati[]>(`${this.BASE_URL}/product`);
+  getMercati(): Observable<Mercato[]> {
+    return this.http.get<Mercato[]>(`${this.BASE_URL}/mercati`);
   }
 }
