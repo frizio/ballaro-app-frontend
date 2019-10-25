@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { tileLayer, latLng, marker, icon, Map } from 'leaflet';
+import { tileLayer, latLng, marker, icon, Map, Marker, LatLng } from 'leaflet';
 
 @Component({
   selector: 'app-main-map',
@@ -11,6 +11,7 @@ export class MainMapComponent implements OnInit {
   theMap: Map;
 
   currentLocation = {};
+  location: number[] = [];
 
   // Define our base layers so we can reference them multiple times
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -40,7 +41,7 @@ export class MainMapComponent implements OnInit {
         }
       )
     }
-);
+  );
 
   // Layers control object with our two base layers
   layersControl = {
@@ -63,12 +64,15 @@ export class MainMapComponent implements OnInit {
 
   async ngOnInit() {
     console.log('Map ngOnInit');
+    /*
     const currentPosition = await this.getCurrentPosition();
     this.currentLocation = {
       latitude: currentPosition.coords.latitude,
       longitude: currentPosition.coords.longitude
     };
-    console.log(this.currentLocation);
+    */
+    this.location[0] = + localStorage.getItem('latitude');
+    this.location[1] = + localStorage.getItem('longitude');
  }
 
   getCurrentPosition(options = {}): Promise<Position> {
@@ -108,6 +112,9 @@ export class MainMapComponent implements OnInit {
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
     this.theMap = map;
+    const locationMarker = this.generateMarker(this.location);
+    locationMarker.addTo(this.theMap);
+    this.theMap.setView(new LatLng(this.location[0], this.location[1]), 9);
   }
 
   onMapClick(infoClick: any) {
@@ -121,6 +128,22 @@ export class MainMapComponent implements OnInit {
 
   onMapZoom() {
     console.log('Callback metodo onMapZoom()');
+  }
+
+  generateMarker(position: number[]): Marker {
+    return marker(
+      [ position[0], position[1] ],
+      {
+        icon: icon(
+          {
+            iconSize: [ 25, 41 ],
+            iconAnchor: [ 13, 41 ],
+            iconUrl: 'leaflet/marker-icon.png',
+            shadowUrl: 'leaflet/marker-shadow.png'
+          }
+        )
+      }
+    );
   }
 
 }

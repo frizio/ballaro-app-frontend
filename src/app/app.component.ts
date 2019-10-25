@@ -33,11 +33,14 @@ export class AppComponent implements OnInit {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.onLocationFound, this.onLocationError);
     } else {
-        console.log('Geo Location not supported by browser');
+        console.log('Attivare il sensore GPS del dispositivo per utilizzare l\'app');
     }
   }
   private onLocationFound(event: any) {
     console.log(event);
+    localStorage.clear();
+    localStorage.setItem('longitude', event.coords.longitude);
+    localStorage.setItem('latitude', event.coords.latitude);
   }
   private onLocationError(event: any) {
     alert(event.message);
