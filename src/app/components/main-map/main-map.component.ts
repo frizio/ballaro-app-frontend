@@ -112,7 +112,7 @@ export class MainMapComponent implements OnInit {
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
     this.theMap = map;
-    const locationMarker = this.generateMarker(this.location);
+    const locationMarker = this.generateMarker(this.location, 'orange');
     locationMarker.addTo(this.theMap);
     this.theMap.setView(new LatLng(this.location[0], this.location[1]), 9);
   }
@@ -130,13 +130,13 @@ export class MainMapComponent implements OnInit {
     console.log('Callback metodo onMapZoom()');
   }
 
-  generateMarker(position: number[]): Marker {
+  generateMarker(position: number[], color: string): Marker {
     return marker(
       [ position[0], position[1] ],
       {
         icon: icon(
           {
-            iconUrl: 'assets/leaflet-color-markers/img/marker-icon-green.png',
+            iconUrl: `assets/leaflet-color-markers/img/marker-icon-${color}.png`,
             shadowUrl: 'assets/leaflet-color-markers/img/marker-shadow.png',
             iconSize: [25, 41],
             iconAnchor: [12, 41],
