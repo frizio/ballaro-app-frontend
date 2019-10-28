@@ -1,3 +1,5 @@
+import { MercatiService } from './../../services/mercati.service';
+import { Mercato } from './../../interfaces/mercato';
 import { Component, OnInit } from '@angular/core';
 import { tileLayer, latLng, marker, icon, Map, Marker, LatLng } from 'leaflet';
 
@@ -7,6 +9,8 @@ import { tileLayer, latLng, marker, icon, Map, Marker, LatLng } from 'leaflet';
   styleUrls: ['./main-map.component.css']
 })
 export class MainMapComponent implements OnInit {
+
+  mercati: Mercato[];
 
   theMap: Map;
 
@@ -62,7 +66,13 @@ export class MainMapComponent implements OnInit {
     center: latLng([38.088, 13.155])
   };
 
-  async ngOnInit() {
+  constructor(
+    private mercatiService: MercatiService
+  ) {
+
+  }
+
+  ngOnInit() {
     console.log('Map ngOnInit');
     /*
     const currentPosition = await this.getCurrentPosition();
@@ -73,6 +83,8 @@ export class MainMapComponent implements OnInit {
     */
     this.location[0] = + localStorage.getItem('latitude');
     this.location[1] = + localStorage.getItem('longitude');
+
+    this.getMercati();
  }
 
   getCurrentPosition(options = {}): Promise<Position> {
@@ -144,6 +156,18 @@ export class MainMapComponent implements OnInit {
             shadowSize: [41, 41]
           }
         )
+      }
+    );
+  }
+
+  getMercati() {
+    this.mercatiService.getMercati().subscribe(
+      res => {
+        // console.log('OK');
+        this.mercati = res;
+      },
+      err => {
+        console.log(err);
       }
     );
   }
