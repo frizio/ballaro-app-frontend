@@ -165,6 +165,13 @@ export class MainMapComponent implements OnInit {
       res => {
         // console.log('OK');
         this.mercati = res;
+        this.mercati.forEach(mercato => {
+          // console.log(mercato);
+          const theMarker = this.generateMarker([mercato.longitude, mercato.latitude], 'green');
+          const template = `<table><tr><th>Nome</th><th>${mercato.nome}</th></tr><tr><td>Citta</td><td>${mercato.comune}</td></tr></table>`;
+          theMarker.bindPopup(template).openPopup();
+          theMarker.addTo(this.theMap);
+        });
       },
       err => {
         console.log(err);
