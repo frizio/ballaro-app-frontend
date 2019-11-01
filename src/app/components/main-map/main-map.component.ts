@@ -1,3 +1,4 @@
+import { Observable, Observer } from 'rxjs';
 import { MercatiService } from './../../services/mercati.service';
 import { Mercato } from './../../interfaces/mercato';
 import { Component, OnInit } from '@angular/core';
@@ -14,7 +15,7 @@ export class MainMapComponent implements OnInit {
 
   theMap: Map;
 
-  currentLocation = {};
+  currentLocation = [];
   location: number[] = [];
 
   // Define our base layers so we can reference them multiple times
@@ -74,18 +75,29 @@ export class MainMapComponent implements OnInit {
 
   ngOnInit() {
     console.log('Map ngOnInit');
-    /*
-    const currentPosition = await this.getCurrentPosition();
-    this.currentLocation = {
-      latitude: currentPosition.coords.latitude,
-      longitude: currentPosition.coords.longitude
-    };
-    */
+
     this.location[0] = + localStorage.getItem('latitude');
     this.location[1] = + localStorage.getItem('longitude');
 
     this.getMercati();
+
  }
+
+  getCurrentPositionn(): Observable<Position> {
+    return new Observable((observer: Observer<Position>) => {
+        // Invokes getCurrentPosition method of Geolocation API.
+        navigator.geolocation.watchPosition(
+            (position: Position) => {
+                observer.next(position);
+                observer.complete();
+            },
+            (error: PositionError) => {
+                console.log('Geolocation service: ' + error.message);
+                observer.error(error);
+            }
+        );
+    });
+  }
 
   getCurrentPosition(options = {}): Promise<Position> {
     return new Promise(
@@ -124,9 +136,49 @@ export class MainMapComponent implements OnInit {
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
     this.theMap = map;
-    const locationMarker = this.generateMarker(this.location, 'orange');
-    locationMarker.addTo(this.theMap);
-    this.theMap.setView(new LatLng(this.location[0], this.location[1]), 9);
+
+    if (navigator.geolocation) {
+      this.getCurrentPositionn().subscribe(
+          (position: Position) => {
+            /*
+            this.currentLocation = {
+              longitude: position.coords.longitude,
+              latitude: position.coords.latitude
+             };
+            */
+             this.currentLocation = [
+               position.coords.latitude,
+               position.coords.longitude
+             ];
+          },
+          (error: PositionError) => {
+              if (error.code > 0) {
+                  switch (error.code) {
+                      case error.PERMISSION_DENIED:
+                          console.log('permission denied');
+                          break;
+                      case error.POSITION_UNAVAILABLE:
+                          console.log('position unavailable');
+                          break;
+                      case error.TIMEOUT:
+                          console.log('position timeout');
+                          break;
+                  }
+              }
+          },
+          () => { 
+            console.log('Geolocation service: completed.');
+            const locationMarker = this.generateMarker(this.currentLocation, 'orange');
+            locationMarker.addTo(this.theMap);
+            const template = `La tua posizione`;
+            locationMarker.bindPopup(template).openPopup();
+            this.theMap.setView(new LatLng(this.currentLocation[0], this.currentLocation[1]), 9);
+          }
+        );
+      } else {
+        console.log('browser doesn\'t support geolocation');
+    }
+
   }
 
   onMapClick(infoClick: any) {

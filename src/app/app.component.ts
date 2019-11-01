@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     }
   }
   private onLocationFound(event: any) {
-    console.log(event);
+    // console.log(event);
     localStorage.clear();
     localStorage.setItem('longitude', event.coords.longitude);
     localStorage.setItem('latitude', event.coords.latitude);
