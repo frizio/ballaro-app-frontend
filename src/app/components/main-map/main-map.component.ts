@@ -19,7 +19,6 @@ export class MainMapComponent implements OnInit {
   theMap: Map;
 
   currentLocation = [];
-  location: number[] = [];
 
   // Define our base layers so we can reference them multiple times
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -78,14 +77,11 @@ export class MainMapComponent implements OnInit {
   ngOnInit() {
     console.log('Map ngOnInit');
 
-    this.location[0] = + localStorage.getItem('latitude');
-    this.location[1] = + localStorage.getItem('longitude');
-
     this.getMercati();
     this.getPorti();
  }
 
-  getCurrentPositionn(): Observable<Position> {
+  getCurrentPosition(): Observable<Position> {
     return new Observable((observer: Observer<Position>) => {
         // Invokes getCurrentPosition method of Geolocation API.
         navigator.geolocation.watchPosition(
@@ -101,70 +97,29 @@ export class MainMapComponent implements OnInit {
     });
   }
 
-  getCurrentPosition(options = {}): Promise<Position> {
-    return new Promise(
-      () => {
-        navigator.geolocation.getCurrentPosition(this.resolvePosition, this.rejectPosition, options);
-      }
-    );
-  }
-
-  private resolvePosition(position: Position) {
-    if (position) {
-      const location = {
-          longitude: position.coords.longitude,
-          latitude: position.coords.latitude
-      };
-      // console.log(position);
-      // console.log(location);
-    }
-  }
-
-  private rejectPosition(error: any) {
-    console.log(error);
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            return 'User denied the request for Geolocation.';
-        case error.POSITION_UNAVAILABLE:
-            return 'Location information is unavailable.';
-        case error.TIMEOUT:
-            return 'The request to get user location timed out.';
-        case error.UNKNOWN_ERROR:
-            return 'An unknown error occurred.';
-    }
-  }
-
-
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
     this.theMap = map;
 
     if (navigator.geolocation) {
-      this.getCurrentPositionn().subscribe(
-          (position: Position) => {
-            /*
-            this.currentLocation = {
-              longitude: position.coords.longitude,
-              latitude: position.coords.latitude
-             };
-            */
-             this.currentLocation = [
+      this.getCurrentPosition().subscribe(
+            (position: Position) => {
+            console.log(position);
+            this.currentLocation = [
                position.coords.latitude,
                position.coords.longitude
              ];
           },
           (error: PositionError) => {
+              console.log(error);
               if (error.code > 0) {
                   switch (error.code) {
-                      case error.PERMISSION_DENIED:
-                          console.log('permission denied');
-                          break;
-                      case error.POSITION_UNAVAILABLE:
-                          console.log('position unavailable');
-                          break;
-                      case error.TIMEOUT:
-                          console.log('position timeout');
-                          break;
+                    case error.PERMISSION_DENIED:
+                      return 'User denied the request for Geolocation.';
+                  case error.POSITION_UNAVAILABLE:
+                      return 'Location information is unavailable.';
+                  case error.TIMEOUT:
+                      return 'The request to get user location timed out.';
                   }
               }
           },
