@@ -1,3 +1,5 @@
+import { Porto } from './../../interfaces/porto';
+import { PortiService } from './../../services/porti.service';
 import { Observable, Observer } from 'rxjs';
 import { MercatiService } from './../../services/mercati.service';
 import { Mercato } from './../../interfaces/mercato';
@@ -12,6 +14,7 @@ import { tileLayer, latLng, marker, icon, Map, Marker, LatLng } from 'leaflet';
 export class MainMapComponent implements OnInit {
 
   mercati: Mercato[];
+  porti: Porto[];
 
   theMap: Map;
 
@@ -68,10 +71,9 @@ export class MainMapComponent implements OnInit {
   };
 
   constructor(
-    private mercatiService: MercatiService
-  ) {
-
-  }
+    private mercatiService: MercatiService,
+    private portiService: PortiService
+  ) {  }
 
   ngOnInit() {
     console.log('Map ngOnInit');
@@ -80,7 +82,7 @@ export class MainMapComponent implements OnInit {
     this.location[1] = + localStorage.getItem('longitude');
 
     this.getMercati();
-
+    this.getPorti();
  }
 
   getCurrentPositionn(): Observable<Position> {
@@ -221,6 +223,25 @@ export class MainMapComponent implements OnInit {
           // console.log(mercato);
           const theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'green');
           const template = `<table><tr><th>Nome</th><th>${mercato.nome}</th></tr><tr><td>Citta</td><td>${mercato.comune}</td></tr></table>`;
+          theMarker.bindPopup(template).openPopup();
+          theMarker.addTo(this.theMap);
+        });
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  getPorti() {
+    this.portiService.getPorti().subscribe(
+      res => {
+        // console.log('OK');
+        this.porti = res;
+        this.porti.forEach(porto => {
+          // console.log(mercato);
+          const theMarker = this.generateMarker([porto.latitude, porto.longitude], 'blue');
+          const template = `<table><tr><th>Nome</th><th>${porto.nome}</th></tr><tr><td>Citta</td><td>${porto.id}</td></tr></table>`;
           theMarker.bindPopup(template).openPopup();
           theMarker.addTo(this.theMap);
         });
