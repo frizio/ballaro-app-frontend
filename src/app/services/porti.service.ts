@@ -18,4 +18,8 @@ export class PortiService {
     return this.http.get<Porto[]>(`${this.BASE_URL}/porti`);
   }
 
+  getPescatoPerPorti(provincia: string): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/pescato/${provincia}/10`);
+  }
+
 }
