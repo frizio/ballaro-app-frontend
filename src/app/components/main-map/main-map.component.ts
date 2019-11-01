@@ -1,3 +1,5 @@
+import { LocationInfo } from '../../interfaces/location-info';
+import { GeocodeService } from './../../services/geocode.service';
 import { Porto } from './../../interfaces/porto';
 import { PortiService } from './../../services/porti.service';
 import { Observable, Observer } from 'rxjs';
@@ -18,7 +20,7 @@ export class MainMapComponent implements OnInit {
 
   theMap: Map;
 
-  currentLocation = [];
+  currentLocation: LocationInfo;
 
   // Define our base layers so we can reference them multiple times
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -71,12 +73,12 @@ export class MainMapComponent implements OnInit {
 
   constructor(
     private mercatiService: MercatiService,
-    private portiService: PortiService
+    private portiService: PortiService,
+    private geocodeService: GeocodeService
   ) {  }
 
   ngOnInit() {
     console.log('Map ngOnInit');
-
     this.getMercati();
     this.getPorti();
  }
@@ -104,11 +106,15 @@ export class MainMapComponent implements OnInit {
     if (navigator.geolocation) {
       this.getCurrentPosition().subscribe(
             (position: Position) => {
-            console.log(position);
-            this.currentLocation = [
-               position.coords.latitude,
-               position.coords.longitude
-             ];
+            // console.log(position);
+            this.currentLocation = {
+               latitude: position.coords.latitude,
+               longitude: position.coords.longitude,
+               village: '',
+               county: '',
+               state: '',
+               country: ''
+            };
           },
           (error: PositionError) => {
               console.log(error);
@@ -125,11 +131,31 @@ export class MainMapComponent implements OnInit {
           },
           () => {
             console.log('Geolocation service: completed.');
-            const locationMarker = this.generateMarker(this.currentLocation, 'orange');
-            const template = `La tua posizione`;
-            locationMarker.bindPopup(template);
-            locationMarker.addTo(this.theMap);
-            this.theMap.setView(new LatLng(this.currentLocation[0], this.currentLocation[1]), 9);
+
+            this.geocodeService.reverse(this.currentLocation.latitude, this.currentLocation.longitude).subscribe(
+              res => {
+                // console.log(res.address);
+                this.currentLocation.village = res.address.village;
+                this.currentLocation.county = res.address.county;
+                this.currentLocation.state = res.address.state;
+                this.currentLocation.country = res.address.country;
+                console.log(this.currentLocation);
+              },
+              err => {
+                console.log(err);
+              },
+              () => {
+                console.log('Reverse Geocodoing complete');
+
+                const locationMarker = this.generateMarker([this.currentLocation.latitude, this.currentLocation.longitude], 'orange');
+                const template = `La tua posizione`;
+                locationMarker.bindPopup(template);
+                locationMarker.addTo(this.theMap);
+                this.theMap.setView(new LatLng(this.currentLocation.latitude, this.currentLocation.longitude), 9);
+
+              }
+            );
+
           }
         );
       } else {
