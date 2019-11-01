@@ -126,9 +126,9 @@ export class MainMapComponent implements OnInit {
           () => {
             console.log('Geolocation service: completed.');
             const locationMarker = this.generateMarker(this.currentLocation, 'orange');
-            locationMarker.addTo(this.theMap);
             const template = `La tua posizione`;
-            locationMarker.bindPopup(template).openPopup();
+            locationMarker.bindPopup(template);
+            locationMarker.addTo(this.theMap);
             this.theMap.setView(new LatLng(this.currentLocation[0], this.currentLocation[1]), 9);
           }
         );

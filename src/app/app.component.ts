@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     // console.log(event);
   }
   private onLocationError(event: any) {
-    alert(event.message);
+    alert('Attivare il sensore GPS del dispositivo per utilizzare l\'app');
   }
 
 }
