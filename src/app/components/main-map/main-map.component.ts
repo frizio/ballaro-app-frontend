@@ -1,3 +1,4 @@
+import { ColtivazioniService } from './../../services/coltivazioni.service';
 import { LocationInfo } from '../../interfaces/location-info';
 import { GeocodeService } from './../../services/geocode.service';
 import { Porto } from './../../interfaces/porto';
@@ -74,6 +75,7 @@ export class MainMapComponent implements OnInit {
   constructor(
     private mercatiService: MercatiService,
     private portiService: PortiService,
+    private coltivazioniService: ColtivazioniService,
     private geocodeService: GeocodeService
   ) {  }
 
@@ -146,16 +148,31 @@ export class MainMapComponent implements OnInit {
               },
               () => {
                 console.log('Reverse Geocodoing complete');
-
-                const locationMarker = this.generateMarker([this.currentLocation.latitude, this.currentLocation.longitude], 'orange');
-                const template = `La tua posizione`;
-                locationMarker.bindPopup(template);
-                locationMarker.addTo(this.theMap);
-                this.theMap.setView(new LatLng(this.currentLocation.latitude, this.currentLocation.longitude), 9);
-
+                let tmp: any;
+                this.coltivazioniService.getColtivazioni(this.currentLocation.county).subscribe(
+                  res => {
+                    tmp = res;
+                  },
+                  err => {
+                    console.log(err);
+                  },
+                  () => {
+                    // console.log(tmp);
+                    const locationMarker = this.generateMarker([this.currentLocation.latitude, this.currentLocation.longitude], 'orange');
+                    let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
+                    template += '<table>';
+                    for (let i = 0; i < tmp.length; i++) {
+                      const row = `<tr><td>${tmp[i].tipo}</td><td>${tmp[i].quantita}</td></tr>`;
+                      template += row;
+                    }
+                    template += '</table>';
+                    locationMarker.bindPopup(template);
+                    locationMarker.addTo(this.theMap);
+                    this.theMap.setView(new LatLng(this.currentLocation.latitude, this.currentLocation.longitude), 9);
+                  }
+                );
               }
             );
-
           }
         );
       } else {
