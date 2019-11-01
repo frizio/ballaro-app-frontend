@@ -166,7 +166,7 @@ export class MainMapComponent implements OnInit {
                   }
               }
           },
-          () => { 
+          () => {
             console.log('Geolocation service: completed.');
             const locationMarker = this.generateMarker(this.currentLocation, 'orange');
             locationMarker.addTo(this.theMap);
@@ -219,7 +219,7 @@ export class MainMapComponent implements OnInit {
         this.mercati = res;
         this.mercati.forEach(mercato => {
           // console.log(mercato);
-          const theMarker = this.generateMarker([mercato.longitude, mercato.latitude], 'green');
+          const theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'green');
           const template = `<table><tr><th>Nome</th><th>${mercato.nome}</th></tr><tr><td>Citta</td><td>${mercato.comune}</td></tr></table>`;
           theMarker.bindPopup(template).openPopup();
           theMarker.addTo(this.theMap);
