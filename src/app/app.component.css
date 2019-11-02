@@ -9,3 +9,7 @@ main {
 mat-sidenav {
     width: 250px;
 }
+
+main {
+    height: 100%;
+}
