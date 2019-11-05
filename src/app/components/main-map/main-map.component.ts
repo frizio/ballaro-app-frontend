@@ -149,6 +149,7 @@ export class MainMapComponent implements OnInit {
               },
               err => {
                 console.log(err);
+                alert('Errore in reverse Geocoding');
               },
               () => {
                 console.log('Reverse Geocodoing complete');
