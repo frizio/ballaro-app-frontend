@@ -1,4 +1,24 @@
 <div class="home" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap.gt-md="10px" fxLayoutAlign="center center">
-<p>crops works!</p>
-<p><button type="submit" routerLink="/map" mat-raised-button color="primary">Mercati</button></p>
+  
+  <h4>Prodotti più coltivati per la provincia di Palermo</h4>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="weight">
+      <th mat-header-cell *matHeaderCellDef> Weight </th>
+      <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <p><button type="submit" routerLink="/map" mat-raised-button color="primary">Mercati</button></p>
+
 </div>
