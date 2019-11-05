@@ -164,8 +164,8 @@ export class MainMapComponent implements OnInit {
                     // console.log(tmp);
                     let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
                     template += '<table>';
-                    for (let i = 0; i < tmp.length; i++) {
-                      const row = `<tr><td>${tmp[i].tipo}</td><td>${tmp[i].quantita}</td></tr>`;
+                    for (const t of tmp) {
+                      const row = `<tr><td>${t.tipo}</td><td>${t.quantita}</td></tr>`;
                       template += row;
                     }
                     template += '</table>';
@@ -263,8 +263,8 @@ export class MainMapComponent implements OnInit {
         if (res) {
           let template = `<h5>Porto di ${porto} - Quantità pescato (quintali)</h5>`;
           template += '<table>';
-          for (let i = 0; i < res.length; i++) {
-            const row = `<tr><td>${res[i].specie}</td><td>${res[i].quantita}</td></tr>`;
+          for (const pescato of res) {
+            const row = `<tr><td>${pescato.specie}</td><td>${pescato.quantita}</td></tr>`;
             template += row;
           }
           template += '</table>';
