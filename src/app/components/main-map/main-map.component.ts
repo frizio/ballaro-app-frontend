@@ -20,7 +20,10 @@ declare var ol: any;
 export class MainMapComponent implements OnInit {
 
   mercati: Mercato[];
+  mercatiLayerGroup: LayerGroup;
+
   porti: Porto[];
+  portiLayerGroup: LayerGroup;
 
   theMap: Map;
 
@@ -213,12 +216,9 @@ export class MainMapComponent implements OnInit {
       },
       () => {
         console.log('Mercati received');
-        /*
-        const mercatiOverlay = {Mercati1: new LayerGroup(tmp)};
-        const layerControl = new Control.Layers(mercatiOverlay).addTo(this.theMap);
-        layerControl.addOverlay(new LayerGroup(tmp), 'Mercati2');
-        */
-        this.layersControl.addOverlay(new LayerGroup(tmp), 'Mercati');
+        this.mercatiLayerGroup = new LayerGroup(tmp);
+        this.layersControl.addOverlay(this.mercatiLayerGroup, 'Mercati');
+        this.mercatiLayerGroup.addTo(this.theMap);
       }
     );
   }
@@ -243,7 +243,9 @@ export class MainMapComponent implements OnInit {
       },
       () => {
         console.log('Porti received');
-        this.layersControl.addOverlay(new LayerGroup(tmp), 'Porti');
+        this.portiLayerGroup = new LayerGroup(tmp);
+        this.layersControl.addOverlay(this.portiLayerGroup, 'Porti');
+        this.portiLayerGroup.addTo(this.theMap);
       }
     );
   }
