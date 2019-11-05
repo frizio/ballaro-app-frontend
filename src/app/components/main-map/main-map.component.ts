@@ -85,7 +85,7 @@ export class MainMapComponent implements OnInit {
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
     this.theMap = map;
-
+    map.zoomControl.remove();
     this.layersControl.addBaseLayer(this.streetMaps, 'Streets Maps');
     this.layersControl.addBaseLayer(this.wMaps, 'Wikimedia Maps');
     this.layersControl.addTo(this.theMap);
