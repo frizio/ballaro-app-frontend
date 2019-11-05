@@ -1,3 +1,4 @@
+import { CropsComponent } from './components/crops/crops.component';
 import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -8,6 +9,7 @@ import { CreditsComponent } from './components/credits/credits.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'crops', component: CropsComponent },
   { path: 'map', component: MainMapComponent },
   { path: 'about', component: AboutComponent },
   { path: 'credits', component: CreditsComponent }
@@ -19,4 +21,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export const routingComponents = [HomeComponent, MainMapComponent, AboutComponent, CreditsComponent];
+export const routingComponents = [HomeComponent, CropsComponent, MainMapComponent, AboutComponent, CreditsComponent];
