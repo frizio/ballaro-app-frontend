@@ -25,6 +25,7 @@ export class MainMapComponent implements OnInit {
   theMap: Map;
 
   currentLocation: LocationInfo;
+  currentLocationMarker: any;
 
   // Define our base layers so we can reference them multiple times
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -136,7 +137,7 @@ export class MainMapComponent implements OnInit {
           },
           () => {
             console.log('Geolocation service: completed.');
-
+            this.currentLocationMarker = this.generateMarker([this.currentLocation.latitude, this.currentLocation.longitude], 'orange');
             this.geocodeService.reverse(this.currentLocation.latitude, this.currentLocation.longitude).subscribe(
               res => {
                 // console.log(res.address);
@@ -144,7 +145,7 @@ export class MainMapComponent implements OnInit {
                 this.currentLocation.county = res.address.county;
                 this.currentLocation.state = res.address.state;
                 this.currentLocation.country = res.address.country;
-                console.log(this.currentLocation);
+                // console.log(this.currentLocation);
               },
               err => {
                 console.log(err);
@@ -161,7 +162,6 @@ export class MainMapComponent implements OnInit {
                   },
                   () => {
                     // console.log(tmp);
-                    const locationMarker = this.generateMarker([this.currentLocation.latitude, this.currentLocation.longitude], 'orange');
                     let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
                     template += '<table>';
                     for (let i = 0; i < tmp.length; i++) {
@@ -169,8 +169,8 @@ export class MainMapComponent implements OnInit {
                       template += row;
                     }
                     template += '</table>';
-                    locationMarker.bindPopup(template);
-                    locationMarker.addTo(this.theMap);
+                    this.currentLocationMarker.bindPopup(template);
+                    this.currentLocationMarker.addTo(this.theMap);
                     this.theMap.setView(new LatLng(this.currentLocation.latitude, this.currentLocation.longitude), 9);
                   }
                 );
@@ -239,8 +239,7 @@ export class MainMapComponent implements OnInit {
         // console.log('OK');
         this.porti = res;
         this.porti.forEach(porto => {
-          // console.log(mercato);
-          const theMarker = this.generateMarker([porto.latitude, porto.longitude], 'blue');
+          const theMarker = this.generateMarker([porto.latitude, porto.longitude], 'blue').bindTooltip(porto.nome);
           // const template = `<table><tr><th>Nome</th><th>${porto.nome}</th></tr><tr><td>Citta</td><td>${porto.id}</td></tr></table>`;
           // theMarker.bindPopup(template).openPopup();
           theMarker.addTo(this.theMap).on('click', this.onPortoClick, this);
@@ -255,48 +254,27 @@ export class MainMapComponent implements OnInit {
   onPortoClick(event: any) {
     // console.log(event);
     const theMarker = event.target;
+    const porto = theMarker.getTooltip().getContent().trim();
+    // console.log(nomePorto);
     // theMarker.bindPopup('Porto details').openPopup();
-    this.geocodeService.reverse(event.latlng.lat, event.latlng.lng).subscribe(
+    this.portiService.getPescatoPerPorto(porto).subscribe(
       (res) => {
-        console.log(res.address);
-        const porto = res.address.town ? res.address.town : res.address.city ;
-        console.log(porto);
-        this.portiService.getPescatoPerPorto(porto).subscribe(
-          (ress) => {
-            console.log(ress);
-            if (ress) {
-              let template = `<h5>Porto di ${porto} - Quantità pescato (quintali)</h5>`;
-              template += '<table>';
-              for (let i = 0; i < ress.length; i++) {
-                const row = `<tr><td>${ress[i].specie}</td><td>${ress[i].quantita}</td></tr>`;
-                template += row;
-              }
-              template += '</table>';
-              theMarker.bindPopup(template).openPopup();
-            }
-          },
-          (err) => {
-            console.log(err);
+        // console.log(res);
+        if (res) {
+          let template = `<h5>Porto di ${porto} - Quantità pescato (quintali)</h5>`;
+          template += '<table>';
+          for (let i = 0; i < res.length; i++) {
+            const row = `<tr><td>${res[i].specie}</td><td>${res[i].quantita}</td></tr>`;
+            template += row;
           }
-        );
+          template += '</table>';
+          theMarker.bindPopup(template).openPopup();
+        }
       },
       (err) => {
         console.log(err);
       }
     );
-
-    // this.portiService.getPescatoPerPorto();
-
-    /*
-    let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
-    template += '<table>';
-    for (let i = 0; i < tmp.length; i++) {
-      const row = `<tr><td>${tmp[i].tipo}</td><td>${tmp[i].quantita}</td></tr>`;
-      template += row;
-    }
-    template += '</table>';
-    */
-
   }
 }
 
