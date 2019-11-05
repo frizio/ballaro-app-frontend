@@ -8,7 +8,7 @@ import { Observable, Observer } from 'rxjs';
 import { MercatiService } from './../../services/mercati.service';
 import { Mercato } from './../../interfaces/mercato';
 import { Component, OnInit } from '@angular/core';
-import { tileLayer, latLng, marker, icon, Map, Marker, LatLng } from 'leaflet';
+import { tileLayer, latLng, marker, icon, Map, Marker, LatLng, LayerGroup, Control, Layer, TileLayer } from 'leaflet';
 
 declare var ol: any;
 
@@ -20,7 +20,10 @@ declare var ol: any;
 export class MainMapComponent implements OnInit {
 
   mercati: Mercato[];
+  mercatiLayerGroup: LayerGroup;
+
   porti: Porto[];
+  portiLayerGroup: LayerGroup;
 
   theMap: Map;
 
@@ -28,47 +31,21 @@ export class MainMapComponent implements OnInit {
   currentLocationMarker: any;
 
   // Define our base layers so we can reference them multiple times
-  streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  streetMaps: TileLayer = new TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                           {
                             detectRetina: true,
                             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                           }
   );
 
-  wMaps = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
+  wMaps: TileLayer = new TileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',
                       {
                         detectRetina: true,
                         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                       }
   );
 
-  // Marker for my home
-  home = marker(
-    [ 38.108, 13.335 ],
-    {
-      icon: icon(
-        {
-          iconSize: [ 25, 41 ],
-          iconAnchor: [ 13, 41 ],
-          iconUrl: 'leaflet/marker-icon.png',
-          shadowUrl: 'leaflet/marker-shadow.png'
-        }
-      )
-    }
-  );
-
-  // Layers control object with our two base layers
-  layersControl = {
-    baseLayers: {
-      'Street Maps': this.streetMaps,
-      'Wikimedia Maps': this.wMaps
-    },
-    overlays: {
-      'My Home': this.home,
-      'I Mercati': this.home,
-      'I Porti': this.home,
-    }
-  };
+  layersControl: Control.Layers = new Control.Layers();;
 
   options = {
     layers: [ this.streetMaps ],
@@ -108,6 +85,10 @@ export class MainMapComponent implements OnInit {
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
     this.theMap = map;
+    map.zoomControl.remove();
+    this.layersControl.addBaseLayer(this.streetMaps, 'Streets Maps');
+    this.layersControl.addBaseLayer(this.wMaps, 'Wikimedia Maps');
+    this.layersControl.addTo(this.theMap);
 
     if (navigator.geolocation) {
       this.getCurrentPosition().subscribe(
@@ -216,6 +197,7 @@ export class MainMapComponent implements OnInit {
   }
 
   getMercati() {
+    const tmp = [];
     this.mercatiService.getMercati().subscribe(
       res => {
         // console.log('OK');
@@ -225,16 +207,24 @@ export class MainMapComponent implements OnInit {
           const theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'green');
           const template = `<table><tr><th>Nome</th><th>${mercato.nome}</th></tr><tr><td>Citta</td><td>${mercato.comune}</td></tr></table>`;
           theMarker.bindPopup(template).openPopup();
-          theMarker.addTo(this.theMap);
+          // theMarker.addTo(this.theMap);
+          tmp.push(theMarker);
         });
       },
       err => {
         console.log(err);
+      },
+      () => {
+        console.log('Mercati received');
+        this.mercatiLayerGroup = new LayerGroup(tmp);
+        this.layersControl.addOverlay(this.mercatiLayerGroup, 'Mercati');
+        this.mercatiLayerGroup.addTo(this.theMap);
       }
     );
   }
 
   getPorti() {
+    const tmp = [];
     this.portiService.getPorti().subscribe(
       res => {
         // console.log('OK');
@@ -243,11 +233,19 @@ export class MainMapComponent implements OnInit {
           const theMarker = this.generateMarker([porto.latitude, porto.longitude], 'blue').bindTooltip(porto.nome);
           // const template = `<table><tr><th>Nome</th><th>${porto.nome}</th></tr><tr><td>Citta</td><td>${porto.id}</td></tr></table>`;
           // theMarker.bindPopup(template).openPopup();
-          theMarker.addTo(this.theMap).on('click', this.onPortoClick, this);
+          theMarker.on('click', this.onPortoClick, this);
+          // theMarker.addTo(this.theMap)
+          tmp.push(theMarker);
         });
       },
       err => {
         console.log(err);
+      },
+      () => {
+        console.log('Porti received');
+        this.portiLayerGroup = new LayerGroup(tmp);
+        this.layersControl.addOverlay(this.portiLayerGroup, 'Porti');
+        this.portiLayerGroup.addTo(this.theMap);
       }
     );
   }
