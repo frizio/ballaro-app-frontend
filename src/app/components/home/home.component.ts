@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import { PositionInfo } from './../../interfaces/position-info';
+import { PositionService } from './../../services/position.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  currentPosition$: Observable<PositionInfo>;
+
+  constructor(
+    private positionService: PositionService
+  ) { }
 
   ngOnInit() {
+    this.positionService.currentPosition();
+    this.currentPosition$ = this.positionService.currentPosition$;
+
   }
 
 }
