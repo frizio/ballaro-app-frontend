@@ -20,6 +20,7 @@ export class PositionService {
     return new Observable((observer: Observer<Position>) => {
         navigator.geolocation.watchPosition(
             (position: Position) => {
+                // console.log(position);
                 observer.next(position);
                 observer.complete();
             },
@@ -61,8 +62,9 @@ export class PositionService {
           },
           () => {
             console.log('Geolocation service: completed.');
+            // console.log(currentPosition);
             this.currentPositionSubject.next(currentPosition);
-            console.log(this.currentPositionSubject.getValue());
+            // console.log(this.currentPositionSubject.getValue());
           }
       );
     }
