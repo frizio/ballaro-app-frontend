@@ -8,13 +8,13 @@ import { Injectable } from '@angular/core';
 })
 export class PositionService {
 
-  private geocodeService: GeocodeService;
-
   private currentPositionSubject = new BehaviorSubject<PositionInfo>(null);
 
   public currentPosition$: Observable<PositionInfo> = this.currentPositionSubject.asObservable();
 
-  constructor() { }
+  constructor(
+    private geocodeService: GeocodeService
+  ) { }
 
   private watchPosition(): Observable<Position> {
     return new Observable((observer: Observer<Position>) => {
@@ -65,6 +65,7 @@ export class PositionService {
             // console.log(currentPosition);
             this.currentPositionSubject.next(currentPosition);
             // console.log(this.currentPositionSubject.getValue());
+            this.reverseGeocodingPosition();
           }
       );
     }
@@ -87,7 +88,7 @@ export class PositionService {
     () => {
       console.log('Reverse Geocodoing complete');
       this.currentPositionSubject.next(currentPosition);
-      console.log(this.currentPositionSubject.getValue());
+      // console.log(this.currentPositionSubject.getValue());
     }
   );
   }
