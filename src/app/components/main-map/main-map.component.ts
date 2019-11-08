@@ -70,22 +70,6 @@ export class MainMapComponent implements OnInit {
     );
  }
 
-  getCurrentPosition(): Observable<Position> {
-    return new Observable((observer: Observer<Position>) => {
-        // Invokes getCurrentPosition method of Geolocation API.
-        navigator.geolocation.watchPosition(
-            (position: Position) => {
-                observer.next(position);
-                observer.complete();
-            },
-            (error: PositionError) => {
-                console.log('Geolocation service: ' + error.message);
-                observer.error(error);
-            }
-        );
-    });
-  }
-
   onMapReady(map: Map) {
     console.log('Callback metodo onMapReady');
     this.theMap = map;
