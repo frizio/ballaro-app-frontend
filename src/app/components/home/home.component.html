@@ -1,10 +1,14 @@
 <div class="home" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap.gt-md="10px" fxLayoutAlign="center center">
     <section>
-        <p>Ballarò, il mercato storico di Palermo sempre vicino a te. </p>
-        <p>Scopri cosa ti offrono le campagne nei dintorni, i porti più vicini e trova il mercato giusto</p>
+      <mat-card style="background-color: rgba(255, 255, 255, 0.7);">
+        <mat-card-content>
+          <p>Ballarò, il mercato storico di Palermo sempre vicino a te. </p>
+          <p>Scopri cosa ti offrono le campagne nei dintorni, i porti più vicini e trova il mercato giusto</p>
+        </mat-card-content>
+      </mat-card>
     </section>
 
-    <p><button type="submit" routerLink="/crops" mat-raised-button color="primary">Frutta</button></p>
-    <p><button type="submit" routerLink="/map" mat-raised-button color="primary">Pescato</button></p>
-    <p><button type="submit" routerLink="/map" mat-raised-button color="primary">Mercati</button></p>
+    <p><a routerLink="/crops"><img src="../../../assets/button/frutta.png" style="height: 60px"></a></p>
+    <p><a routerLink="/map"><img src="../../../assets/button/pescato.png" style="height: 60px"></a></p>
+    <p><a routerLink="/map"><img src="../../../assets/button/Mercati.png" style="height: 60px"></a></p>
 </div>

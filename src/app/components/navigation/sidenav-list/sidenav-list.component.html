@@ -1,17 +1,17 @@
 <mat-nav-list>
-    <a mat-list-item (click)="onClose('')">
+    <a mat-list-item (click)="onClose('')" routerLink="/">
         <mat-icon>home</mat-icon>
         <span class="nav-caption">Home</span>
     </a>
-    <a mat-list-item (click)="onClose('map')">
+    <a mat-list-item (click)="onClose('map')" routerLink="/map">
         <mat-icon>map</mat-icon>
         <span class="nav-caption">Mappa</span>
     </a>
-    <a mat-list-item (click)="onClose('about')">
+    <a mat-list-item (click)="onClose('about')" routerLink="/about">
         <mat-icon>people</mat-icon>
         <span class="nav-caption">Chi siamo</span>
     </a>
-    <a mat-list-item (click)="onClose('credits')">
+    <a mat-list-item (click)="onClose('credits')" routerLink="/credits">
         <mat-icon>info</mat-icon>
         <span class="nav-caption">Riconoscimenti</span>
     </a>

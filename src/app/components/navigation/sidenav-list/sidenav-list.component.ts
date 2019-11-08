@@ -21,7 +21,7 @@ export class SidenavListComponent implements OnInit {
   onClose(page: string) {
     this.closeSidenav.emit();
 
-    this.router.navigate([page], { replaceUrl: true, state: {data: 'ciao'} });
+    //this.router.navigate([page], { replaceUrl: true, state: {data: 'ciao'} });
   }
 
 }

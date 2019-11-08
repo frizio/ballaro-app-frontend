@@ -1,15 +1,16 @@
 mat-sidenav-container, mat-sidenav-content {
     height: 100%;
+    background-image: url('../assets/sfondohome.jpg');
+    background-position: top left;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-color: transparent;
 }
 
 main {
-    height: 100%;
+    height: calc(100% - 100px);
 }
 
 mat-sidenav {
     width: 250px;
-}
-
-main {
-    height: 100%;
 }
