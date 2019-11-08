@@ -1,6 +1,6 @@
-import { log } from 'util';
+import { PositionInfo } from './../../interfaces/position-info';
+import { PositionService } from './../../services/position.service';
 import { ColtivazioniService } from './../../services/coltivazioni.service';
-import { LocationInfo } from '../../interfaces/location-info';
 import { GeocodeService } from './../../services/geocode.service';
 import { Porto } from './../../interfaces/porto';
 import { PortiService } from './../../services/porti.service';
@@ -27,8 +27,8 @@ export class MainMapComponent implements OnInit {
 
   theMap: Map;
 
-  currentLocation: LocationInfo;
-  currentLocationMarker: any;
+  currentPosition: PositionInfo;
+  currentPositionMarker: any;
 
   // Define our base layers so we can reference them multiple times
   streetMaps: TileLayer = new TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -45,7 +45,7 @@ export class MainMapComponent implements OnInit {
                       }
   );
 
-  layersControl: Control.Layers = new Control.Layers();;
+  layersControl: Control.Layers = new Control.Layers();
 
   options = {
     layers: [ this.streetMaps ],
@@ -54,6 +54,7 @@ export class MainMapComponent implements OnInit {
   };
 
   constructor(
+    private positionService: PositionService,
     private mercatiService: MercatiService,
     private portiService: PortiService,
     private coltivazioniService: ColtivazioniService,
@@ -64,6 +65,9 @@ export class MainMapComponent implements OnInit {
     console.log('Map ngOnInit');
     this.getMercati();
     this.getPorti();
+    this.positionService.currentPosition$.subscribe(
+      pos => this.currentPosition = pos
+    );
  }
 
   getCurrentPosition(): Observable<Position> {
@@ -90,80 +94,30 @@ export class MainMapComponent implements OnInit {
     this.layersControl.addBaseLayer(this.wMaps, 'Wikimedia Maps');
     this.layersControl.addTo(this.theMap);
 
-    if (navigator.geolocation) {
-      this.getCurrentPosition().subscribe(
-            (position: Position) => {
-            // console.log(position);
-            this.currentLocation = {
-               latitude: position.coords.latitude,
-               longitude: position.coords.longitude,
-               village: '',
-               county: '',
-               state: '',
-               country: ''
-            };
-          },
-          (error: PositionError) => {
-              console.log(error);
-              if (error.code > 0) {
-                  switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                      return 'User denied the request for Geolocation.';
-                  case error.POSITION_UNAVAILABLE:
-                      return 'Location information is unavailable.';
-                  case error.TIMEOUT:
-                      return 'The request to get user location timed out.';
-                  }
-              }
-          },
-          () => {
-            console.log('Geolocation service: completed.');
-            this.currentLocationMarker = this.generateMarker([this.currentLocation.latitude, this.currentLocation.longitude], 'orange');
-            this.geocodeService.reverse(this.currentLocation.latitude, this.currentLocation.longitude).subscribe(
-              res => {
-                // console.log(res.address);
-                this.currentLocation.village = res.address.village;
-                this.currentLocation.county = res.address.county;
-                this.currentLocation.state = res.address.state;
-                this.currentLocation.country = res.address.country;
-                // console.log(this.currentLocation);
-              },
-              err => {
-                console.log(err);
-                alert('Errore in reverse Geocoding');
-              },
-              () => {
-                console.log('Reverse Geocodoing complete');
-                let tmp: any;
-                this.coltivazioniService.getColtivazioni(this.currentLocation.county).subscribe(
-                  res => {
-                    tmp = res;
-                  },
-                  err => {
-                    console.log(err);
-                  },
-                  () => {
-                    // console.log(tmp);
-                    let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
-                    template += '<table>';
-                    for (const t of tmp) {
-                      const row = `<tr><td>${t.tipo}</td><td>${t.quantita}</td></tr>`;
-                      template += row;
-                    }
-                    template += '</table>';
-                    this.currentLocationMarker.bindPopup(template);
-                    this.currentLocationMarker.addTo(this.theMap);
-                    this.theMap.setView(new LatLng(this.currentLocation.latitude, this.currentLocation.longitude), 9);
-                  }
-                );
-              }
-            );
-          }
-        );
-      } else {
-        console.log('browser doesn\'t support geolocation');
-    }
-
+    this.currentPositionMarker =
+      this.generateMarker([this.currentPosition.latitude, this.currentPosition.longitude], 'red').addTo(this.theMap);
+    let tmp: any;
+    this.coltivazioniService.getColtivazioni(this.currentPosition.county).subscribe(
+      res => {
+        tmp = res;
+      },
+      err => {
+        console.log(err);
+      },
+      () => {
+        // console.log(tmp);
+        let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
+        template += '<table>';
+        for (const t of tmp) {
+          const row = `<tr><td>${t.tipo}</td><td>${t.quantita}</td></tr>`;
+          template += row;
+        }
+        template += '</table>';
+        this.currentPositionMarker.bindPopup(template);
+        this.currentPositionMarker.addTo(this.theMap);
+        this.theMap.setView(new LatLng(this.currentPosition.latitude, this.currentPosition.longitude), 9);
+      }
+    );
   }
 
   onMapClick(infoClick: any) {
