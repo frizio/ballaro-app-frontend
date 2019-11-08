@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import {LocationService} from './services/location.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { SwUpdate } from '@angular/service-worker';
 export class AppComponent implements OnInit {
 
   constructor(
-    private swUpdate: SwUpdate
+    private swUpdate: SwUpdate,
+    private location: LocationService
   ) {}
 
   ngOnInit() {
@@ -22,25 +24,5 @@ export class AppComponent implements OnInit {
         }
       );
     }
-
-    // Usato solamente per richiedere l'accesso alla posizione all'apertura dell'app
-    this.getLocation();
   }
-
-
-  private getLocation() {
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.onLocationFound, this.onLocationError);
-    } else {
-        console.log('Attivare il sensore GPS del dispositivo per utilizzare l\'app');
-    }
-  }
-  private onLocationFound(event: any) {
-    // console.log(event);
-  }
-  private onLocationError(event: any) {
-    alert('Attivare il sensore GPS del dispositivo per utilizzare l\'app');
-  }
-
 }
