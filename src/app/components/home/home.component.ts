@@ -15,14 +15,22 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private positionService: PositionService,
-    private dataStoreService: DataStoreService
+    private dataStore: DataStoreService
   ) { }
 
   ngOnInit() {
     this.positionService.currentPosition();
     this.currentPosition$ = this.positionService.currentPosition$;
-    this.dataStoreService.getMercati();
-    this.dataStoreService.getPorti();
+    this.dataStore.getMercati();
+    this.dataStore.getPorti();
+  }
+
+  goToPortiMap() {
+    this.dataStore.navFlag = 'porti';
+  }
+
+  goToMercatiMap() {
+    this.dataStore.navFlag = 'mercati';
   }
 
 }

@@ -64,8 +64,13 @@ export class MainMapComponent implements OnInit {
 
   ngOnInit() {
     console.log('Map ngOnInit');
-    this.loadMercati();
-    this.loadPorti();
+    console.log(this.dataStore.navFlag);
+    if (this.dataStore.navFlag === 'mercati' || this.dataStore.navFlag === 'map') {
+      this.loadMercati();
+    }
+    if (this.dataStore.navFlag === 'porti' || this.dataStore.navFlag === 'map') {
+      this.loadPorti();
+    }
     this.positionService.currentPosition$.subscribe(
       pos => this.currentPosition = pos
     );
@@ -81,29 +86,31 @@ export class MainMapComponent implements OnInit {
 
     this.currentPositionMarker =
       this.generateMarker([this.currentPosition.latitude, this.currentPosition.longitude], 'red').addTo(this.theMap);
-    let tmp: any;
-    this.coltivazioniService.getColtivazioni(this.currentPosition.county).subscribe(
-      res => {
-        tmp = res;
-      },
-      err => {
-        console.log(err);
-      },
-      () => {
-        // console.log(tmp);
-        let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
-        template += '<table>';
-        for (const t of tmp) {
-          const row = `<tr><td>${t.tipo}</td><td>${t.quantita}</td></tr>`;
-          template += row;
+    if (this.dataStore.navFlag === 'mercati' || this.dataStore.navFlag === 'map') {
+      let tmp: any;
+      this.coltivazioniService.getColtivazioni(this.currentPosition.county).subscribe(
+        res => {
+          tmp = res;
+        },
+        err => {
+          console.log(err);
+        },
+        () => {
+          // console.log(tmp);
+          let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
+          template += '<table>';
+          for (const t of tmp) {
+            const row = `<tr><td>${t.tipo}</td><td>${t.quantita}</td></tr>`;
+            template += row;
+          }
+          template += '</table>';
+          this.currentPositionMarker.bindPopup(template);
+          this.currentPositionMarker.addTo(this.theMap);
         }
-        template += '</table>';
-        this.currentPositionMarker.bindPopup(template);
-        this.currentPositionMarker.addTo(this.theMap);
-        this.theMap.setView(new LatLng(this.currentPosition.latitude, this.currentPosition.longitude), 9);
-      }
-    );
-  }
+      );
+    }
+    this.theMap.setView(new LatLng(this.currentPosition.latitude, this.currentPosition.longitude), 9);
+    }
 
   onMapClick(infoClick: any) {
     console.log('Callback metodo onMapClick()');

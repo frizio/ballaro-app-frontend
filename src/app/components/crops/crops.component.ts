@@ -1,3 +1,4 @@
+import { DataStoreService } from './../../services/data-store.service';
 import { Coltivazione } from './../../interfaces/coltivazione';
 import { PositionInfo } from './../../interfaces/position-info';
 import { ColtivazioniService } from './../../services/coltivazioni.service';
@@ -18,14 +19,18 @@ export class CropsComponent implements OnInit {
 
   constructor(
     private positionService: PositionService,
-    private coltivazioniService: ColtivazioniService
+    private coltivazioniService: ColtivazioniService,
+    private dataStoreService: DataStoreService
   ) { }
 
   ngOnInit() {
-    console.log('Coltivazioni page');
     this.positionService.currentPosition$.subscribe( pos => this.provincia = pos.county );
     this.coltivazioniService.getColtivazioni(this.provincia).subscribe( colt => this.coltivazioni = colt );
-    
+  }
+
+  goToMercatiMap() {
+    console.log('Vai alla mappa');
+    this.dataStoreService.navFlag = 'mercati';
   }
 
 }

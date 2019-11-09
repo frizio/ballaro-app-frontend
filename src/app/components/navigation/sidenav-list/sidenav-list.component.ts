@@ -1,3 +1,4 @@
+import { DataStoreService } from './../../../services/data-store.service';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -12,7 +13,8 @@ export class SidenavListComponent implements OnInit {
   closeSidenav = new EventEmitter<void>();
 
   constructor(
-    private router: Router
+    private router: Router,
+    private dataStore: DataStoreService
   ) { }
 
   ngOnInit() {
@@ -20,6 +22,10 @@ export class SidenavListComponent implements OnInit {
 
   onClose(page: string) {
     this.closeSidenav.emit();
+
+    if (page === 'map') {
+      this.dataStore.navFlag = page;
+    }
 
     this.router.navigate([page], { replaceUrl: true, state: {data: 'ciao'} });
   }
