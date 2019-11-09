@@ -1,3 +1,4 @@
+import { DataStoreService } from './../../services/data-store.service';
 import { Observable } from 'rxjs';
 import { PositionInfo } from './../../interfaces/position-info';
 import { PositionService } from './../../services/position.service';
@@ -13,13 +14,15 @@ export class HomeComponent implements OnInit {
   currentPosition$: Observable<PositionInfo>;
 
   constructor(
-    private positionService: PositionService
+    private positionService: PositionService,
+    private dataStoreService: DataStoreService
   ) { }
 
   ngOnInit() {
     this.positionService.currentPosition();
     this.currentPosition$ = this.positionService.currentPosition$;
-
+    this.dataStoreService.getMercati();
+    this.dataStoreService.getPorti();
   }
 
 }

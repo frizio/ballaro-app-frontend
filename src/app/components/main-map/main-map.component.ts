@@ -1,3 +1,4 @@
+import { DataStoreService } from './../../services/data-store.service';
 import { PositionInfo } from './../../interfaces/position-info';
 import { PositionService } from './../../services/position.service';
 import { ColtivazioniService } from './../../services/coltivazioni.service';
@@ -55,7 +56,7 @@ export class MainMapComponent implements OnInit {
 
   constructor(
     private positionService: PositionService,
-    private mercatiService: MercatiService,
+    private dataStore: DataStoreService,
     private portiService: PortiService,
     private coltivazioniService: ColtivazioniService,
     private geocodeService: GeocodeService
@@ -63,8 +64,8 @@ export class MainMapComponent implements OnInit {
 
   ngOnInit() {
     console.log('Map ngOnInit');
-    this.getMercati();
-    this.getPorti();
+    this.loadMercati();
+    this.loadPorti();
     this.positionService.currentPosition$.subscribe(
       pos => this.currentPosition = pos
     );
@@ -134,9 +135,9 @@ export class MainMapComponent implements OnInit {
     );
   }
 
-  getMercati() {
+  loadMercati() {
     const tmp = [];
-    this.mercatiService.getMercati().subscribe(
+    this.dataStore.mercati$.subscribe(
       res => {
         // console.log('OK');
         this.mercati = res;
@@ -161,9 +162,9 @@ export class MainMapComponent implements OnInit {
     );
   }
 
-  getPorti() {
+  loadPorti() {
     const tmp = [];
-    this.portiService.getPorti().subscribe(
+    this.dataStore.porti$.subscribe(
       res => {
         // console.log('OK');
         this.porti = res;
