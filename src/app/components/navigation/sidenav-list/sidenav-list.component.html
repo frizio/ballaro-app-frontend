@@ -1,26 +1,30 @@
-<mat-nav-list>
-    <a mat-list-item (click)="onClose('')">
-        <mat-icon>home</mat-icon>
-        <span class="nav-caption">Home</span>
-    </a>
-    <a mat-list-item (click)="onClose('map')">
-        <mat-icon>map</mat-icon>
-        <span class="nav-caption">Mappa</span>
-    </a>
-    <a mat-list-item (click)="onClose('about')">
-        <mat-icon>people</mat-icon>
-        <span class="nav-caption">Chi siamo</span>
-    </a>
-    <a mat-list-item (click)="onClose('credits')">
-        <mat-icon>info</mat-icon>
-        <span class="nav-caption">Riconoscimenti</span>
-    </a>
-<!--
-    <mat-list-item>
-        <button mat-icon-button (click)="sidenav.close()">
-            <mat-icon>eject</mat-icon>
-            <span class="nav-caption">Logout</span>
-        </button>
-    </mat-list-item>
--->
-</mat-nav-list>
+<mat-nav-list class="app-class">
+        <!--
+        <a mat-list-item (click)="onClose('')">
+            <mat-icon>home</mat-icon>
+            <span class="nav-caption">Home</span>
+        </a>
+        <a mat-list-item (click)="onClose('map')" style="height: 100px;">
+            <mat-icon>map</mat-icon>
+            <span class="nav-caption">Mappa</span>
+        </a>
+        -->
+        <a mat-list-item (click)="onClose('')">
+            <img src="assets/grafica/ballaro.png" alt="Home">
+        </a>
+        <a mat-list-item (click)="onClose('map')">
+            <img src="assets/grafica/frutta.png" alt="Frutta">
+        </a>
+        <a mat-list-item (click)="onClose('map')">
+            <img src="assets/grafica/pescato.png" alt="Pescato">
+        </a>
+        <a mat-list-item (click)="onClose('map')">
+            <img src="assets/grafica/mercati.png" alt="Mercati">
+        </a>
+        <a mat-list-item (click)="onClose('about')">
+            <img src="assets/grafica/chisiamo.png" alt="Chi siamo">
+        </a>
+        <a mat-list-item (click)="onClose('credits')">
+            <img src="assets/grafica/riconoscimenti.png" alt="Riconoscimenti">
+        </a>
+    </mat-nav-list>
