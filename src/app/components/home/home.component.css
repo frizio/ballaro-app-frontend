@@ -1,8 +1,16 @@
 .home {
     text-align: center;
-    margin: 10px;;
+    margin: 10px;
 }
 
 p {
     text-align: justify;;
+}
+
+img {
+    max-width:50%;
+}
+
+.button {
+    background-color: transparent;
 }

@@ -12,3 +12,11 @@ a:hover, a:active {
     margin: 0;
     padding: 0;
 }
+
+.mat-toolbar {
+    height: 80px;
+}
+
+img {
+    max-width:50%;
+}
