@@ -11,6 +11,6 @@ img {
     max-width:50%;
 }
 
-.button {
-    background-color: transparent;
+button {
+    margin: 5px;
 }
