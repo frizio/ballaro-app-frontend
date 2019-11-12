@@ -19,4 +19,5 @@ a:hover, a:active {
 
 img {
     max-width:50%;
+    padding-left: 10px;
 }
