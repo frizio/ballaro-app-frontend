@@ -50,8 +50,8 @@ export class MainMapComponent implements OnInit {
 
   options = {
     layers: [ this.streetMaps ],
-    zoom: 8,
-    center: latLng([38.088, 13.155])
+    zoom: 6,
+    center: latLng([40.995, 12.076])
   };
 
   constructor(
