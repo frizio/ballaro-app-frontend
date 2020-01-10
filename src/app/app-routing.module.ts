@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MainMapComponent } from './components/main-map/main-map.component';
 import { AboutComponent } from './components/about/about.component';
 import { CreditsComponent } from './components/credits/credits.component';
+import { AddMarketComponent } from './components/addmarket/addmarket.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'crops', component: CropsComponent },
   { path: 'map', component: MainMapComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'credits', component: CreditsComponent }
+  { path: 'credits', component: CreditsComponent },
+  { path: 'add-market', component: AddMarketComponent }
 ];
 
 @NgModule({
@@ -21,4 +23,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export const routingComponents = [HomeComponent, CropsComponent, MainMapComponent, AboutComponent, CreditsComponent];
+export const routingComponents = [HomeComponent, CropsComponent, MainMapComponent, AboutComponent, CreditsComponent, AddMarketComponent];
