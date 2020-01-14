@@ -1,0 +1,36 @@
+<div class="home" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap.gt-md="10px" fxLayoutAlign="center center">
+
+  <h5>Aggiungi un mercato</h5>
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
+    <div>
+      <label for="market">
+        Nome mercato
+      </label>
+      <mat-form-field class="example-full-width">
+        <input matInput id="market" type="text" formControlName="market">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <label for="lat">
+        Latitudine
+      </label>
+      <mat-form-field class="example-full-width">
+        <input matInput id="lat" type="text" formControlName="lat">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <label for="lon">
+        Longitudine
+      </label>
+      <mat-form-field class="example-full-width">
+        <input matInput id="lon" type="text" formControlName="lon">
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" class="button" type="submit">Aggiungi</button>
+
+  </form>
+
+</div>
