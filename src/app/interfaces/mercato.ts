@@ -6,4 +6,5 @@ export interface Mercato {
     nome: string;
     latitude: number;
     longitude: number;
+    giorno: string;
   }

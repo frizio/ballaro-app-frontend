@@ -149,8 +149,12 @@ export class MainMapComponent implements OnInit {
         // console.log('OK');
         this.mercati = res;
         this.mercati.forEach(mercato => {
-          // console.log(mercato);
-          const theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'green');
+          let theMarker = null;
+          if (mercato.giorno === null) {
+            theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'green');
+          } else {
+            theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'yellow');
+          }
           const template = `<table><tr><th>Nome</th><th>${mercato.nome}</th></tr><tr><td>Citta</td><td>${mercato.comune}</td></tr></table>`;
           theMarker.bindPopup(template).openPopup();
           // theMarker.addTo(this.theMap);
