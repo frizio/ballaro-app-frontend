@@ -117,7 +117,7 @@ export class AddMarketComponent implements OnInit {
   onSubmit(marketData) {
     marketData.lat = this.marker._latlng.lat;
     marketData.lon = this.marker._latlng.lng;
-    this.http.post('http://localhost:3000/api/add-market', marketData).subscribe();
+    this.http.post('https://ballaro.herokuapp.com/api/add-market', marketData).subscribe();
     // Process checkout data here
     console.warn('Market data has been submitted', marketData);
     this.snackBar.open('Salvato con successo', null, {
