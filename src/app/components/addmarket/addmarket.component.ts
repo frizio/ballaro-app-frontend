@@ -47,6 +47,14 @@ export class AddMarketComponent implements OnInit {
     private snackBar: MatSnackBar,
     private http: HttpClient
   ) {
+    this.currentPosition = {
+      latitude: 40.995,
+      longitude: 12.076,
+      village: '',
+      county: '',
+      state: '',
+      country: ''
+    };
     this.checkoutForm = this.formBuilder.group({
       market: '',
       lat: '',
@@ -69,7 +77,7 @@ export class AddMarketComponent implements OnInit {
     this.layersControl.addBaseLayer(this.wMaps, 'Wikimedia Maps');
     this.layersControl.addTo(this.theMap);
 
-    if (this.marker) {
+    if (this.currentPosition) {
       this.marker = this.generateMarker([this.currentPosition.latitude, this.currentPosition.longitude], 'red').addTo(this.theMap);
       this.theMap.setView(new LatLng(this.currentPosition.latitude, this.currentPosition.longitude), 15);
     }
