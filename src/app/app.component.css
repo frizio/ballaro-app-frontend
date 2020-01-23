@@ -3,13 +3,9 @@ mat-sidenav-container, mat-sidenav-content {
 }
 
 main {
-    height: 100%;
+    height: calc(100% - 80px);
 }
 
 mat-sidenav {
     width: 250px;
-}
-
-main {
-    height: 100%;
 }

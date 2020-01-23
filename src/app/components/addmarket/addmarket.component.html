@@ -1,8 +1,6 @@
-<div class="home" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap.gt-md="10px" fxLayoutAlign="center center">
-
-  <h5>Aggiungi un mercato</h5>
-  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)">
-    <div>
+<div class="home" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap.gt-md="10px" fxLayoutAlign="start center">
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)" style="width: 100%; height: 100%;">
+    <div style="margin-left: 30px">
       <label for="market">
         Nome mercato
       </label>
@@ -10,27 +8,17 @@
         <input matInput id="market" type="text" formControlName="market">
       </mat-form-field>
     </div>
-
-    <div>
-      <label for="lat">
-        Latitudine
-      </label>
-      <mat-form-field class="example-full-width">
-        <input matInput id="lat" type="text" formControlName="lat">
-      </mat-form-field>
+    <input matInput id="lat" class="invisible" type="text" formControlName="lat">
+    <input matInput id="lon" class="invisible" type="text" formControlName="lon">
+    <div class="map"
+         leaflet
+         [leafletOptions]="options"
+         (leafletMapReady)="onMapReady($event)"
+         (leafletClick)="onMapClick($event)"
+         (leafletMapMove)="onMapMove()"
+         (leafletMapZoom)="onMapZoom()"
+    >
     </div>
-
-    <div>
-      <label for="lon">
-        Longitudine
-      </label>
-      <mat-form-field class="example-full-width">
-        <input matInput id="lon" type="text" formControlName="lon">
-      </mat-form-field>
-    </div>
-
-    <button mat-raised-button color="primary" class="button" type="submit">Aggiungi</button>
-
+    <button mat-raised-button color="primary" class="button" style="width: 100%;" type="submit">Aggiungi</button>
   </form>
-
 </div>
