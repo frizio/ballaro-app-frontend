@@ -69,17 +69,10 @@ export class AddMarketComponent implements OnInit {
     this.layersControl.addBaseLayer(this.wMaps, 'Wikimedia Maps');
     this.layersControl.addTo(this.theMap);
 
-    this.currentPosition = {
-      latitude: 38.111261,
-      longitude: 13.351265,
-      village: '',
-      county: '',
-      state: '',
-      country: ''
-    };
-    this.marker =
-      this.generateMarker([this.currentPosition.latitude, this.currentPosition.longitude], 'red').addTo(this.theMap);
-    this.theMap.setView(new LatLng(this.currentPosition.latitude, this.currentPosition.longitude), 15);
+    if (this.marker) {
+      this.marker = this.generateMarker([this.currentPosition.latitude, this.currentPosition.longitude], 'red').addTo(this.theMap);
+      this.theMap.setView(new LatLng(this.currentPosition.latitude, this.currentPosition.longitude), 15);
+    }
   }
 
   onMapClick(infoClick: any) {
