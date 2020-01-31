@@ -1,15 +1,29 @@
 <div class="home" fxLayout="column" fxLayout.gt-md="row" fxLayoutGap.gt-md="10px" fxLayoutAlign="start center">
   <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit(checkoutForm.value)" style="width: 100%; height: 100%;">
-    <div style="margin-left: 30px">
-      <label for="market">
-        Nome mercato
-      </label>
-      <mat-form-field class="example-full-width">
-        <input matInput id="market" type="text" formControlName="market">
-      </mat-form-field>
-    </div>
+    <mat-form-field>
+      <mat-label>Market name</mat-label>
+      <input matInput id="market" type="text" formControlName="market">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Other</mat-label>
+      <input matInput id="other" type="text" formControlName="other">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Opening days</mat-label>
+      <select matNativeControl [(ngModel)]="selected" formControlName="day" name="day" (change)="onProfileChange($event.target.value)">
+        <option value="Everyday" selected>Everyday</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+    </mat-form-field>
     <input matInput id="lat" class="invisible" type="text" formControlName="lat">
     <input matInput id="lon" class="invisible" type="text" formControlName="lon">
+    <small style="margin-left: 5px;">Click anywhere on the map to select a position</small>
     <div class="map"
          leaflet
          [leafletOptions]="options"
