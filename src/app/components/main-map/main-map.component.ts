@@ -97,7 +97,7 @@ export class MainMapComponent implements OnInit {
         },
         () => {
           // console.log(tmp);
-          let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
+          let template = `<h5>Crops most cultivated in your area (quintals unit)</h5>`;
           template += '<table>';
           for (const t of tmp) {
             const row = `<tr><td>${t.tipo}</td><td>${t.quantita}</td></tr>`;
@@ -152,10 +152,12 @@ export class MainMapComponent implements OnInit {
           let theMarker = null;
           if (mercato.giorno === null) {
             theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'green');
+          } else if (mercato.giorno.startsWith('Tutti')) {
+            theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'orange');
           } else {
             theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'yellow');
           }
-          const template = `<table><tr><th>Nome</th><th>${mercato.nome}</th></tr><tr><td>Citta</td><td>${mercato.comune}</td></tr></table>`;
+          const template = `<table><tr><th>Name</th><th>${mercato.nome}</th></tr><tr><td>City</td><td>${mercato.comune}</td></tr><tr><td>Day opened</td><td>${mercato.giorno}</td></tr></table>`;
           theMarker.bindPopup(template).openPopup();
           // theMarker.addTo(this.theMap);
           tmp.push(theMarker);
