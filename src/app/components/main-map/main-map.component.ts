@@ -157,7 +157,7 @@ export class MainMapComponent implements OnInit {
           } else {
             theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'yellow');
           }
-          const template = `<table><tr><th>Nome</th><th>${mercato.nome}</th></tr><tr><td>Citta</td><td>${mercato.comune}</td></tr><tr><td>Giorno</td><td>${mercato.giorno}</td></tr></table>`;
+          const template = `<table><tr><th>Name</th><th>${mercato.nome}</th></tr><tr><td>City</td><td>${mercato.comune}</td></tr><tr><td>Day opened</td><td>${mercato.giorno}</td></tr></table>`;
           theMarker.bindPopup(template).openPopup();
           // theMarker.addTo(this.theMap);
           tmp.push(theMarker);
