@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     if ( this.swUpdate.isEnabled ) {
       this.swUpdate.available.subscribe(
         () => {
-          if ( confirm('Nuova versione di Ballaro\' disponibile. Caricare la nuova versione?') ) {
+          if ( confirm('New version of Ballaro\' app available. Download the new version?') ) {
             window.location.reload();
           }
         }
