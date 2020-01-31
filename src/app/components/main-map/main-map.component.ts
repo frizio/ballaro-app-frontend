@@ -97,7 +97,7 @@ export class MainMapComponent implements OnInit {
         },
         () => {
           // console.log(tmp);
-          let template = `<h5>Prodotti più coltivati nei dintorni (quintali)</h5>`;
+          let template = `<h5>Crops most cultivated in your area (quintals unit)</h5>`;
           template += '<table>';
           for (const t of tmp) {
             const row = `<tr><td>${t.tipo}</td><td>${t.quantita}</td></tr>`;
