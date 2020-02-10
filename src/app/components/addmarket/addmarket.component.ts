@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {FormBuilder, NgModel} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { PositionInfo } from './../../interfaces/position-info';
@@ -15,7 +15,8 @@ export class AddMarketComponent implements OnInit {
   checkoutForm;
 
   theMap: Map;
-  currentPosition: PositionInfo;
+  currentPosition: PositionInfo = null;
+  selected = 'Everyday';
   marker: any;
 
   // Define our base layers so we can reference them multiple times
@@ -47,16 +48,11 @@ export class AddMarketComponent implements OnInit {
     private snackBar: MatSnackBar,
     private http: HttpClient
   ) {
-    this.currentPosition = {
-      latitude: 40.995,
-      longitude: 12.076,
-      village: '',
-      county: '',
-      state: '',
-      country: ''
-    };
+    this.positionService.currentPosition();
     this.checkoutForm = this.formBuilder.group({
       market: '',
+      day: this.selected,
+      other: '',
       lat: '',
       lon: ''
     });
@@ -64,9 +60,15 @@ export class AddMarketComponent implements OnInit {
 
   ngOnInit() {
     console.log('Map ngOnInit');
-    this.positionService.currentPosition$.subscribe(
-      pos => this.currentPosition = pos
-    );
+    this.positionService.currentPosition$.subscribe(pos => {
+      if (pos !== null) {
+        if (this.currentPosition === null) {
+          this.marker = this.generateMarker([pos.latitude, pos.longitude], 'red').addTo(this.theMap);
+          this.theMap.setView(new LatLng(pos.latitude, pos.longitude), 15);
+        }
+        this.currentPosition = pos;
+      }
+    });
   }
 
   onMapReady(map: Map) {
@@ -115,6 +117,10 @@ export class AddMarketComponent implements OnInit {
     );
   }
 
+  onProfileChange(value) {
+    this.checkoutForm.day = value;
+  }
+
   onSubmit(marketData) {
     marketData.lat = this.marker._latlng.lat;
     marketData.lon = this.marker._latlng.lng;
@@ -125,5 +131,7 @@ export class AddMarketComponent implements OnInit {
       duration: 3000,
     });
     this.checkoutForm.reset();
+    this.selected = 'Everyday';
+    this.checkoutForm.day = this.selected;
   }
 }
