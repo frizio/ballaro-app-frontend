@@ -158,9 +158,9 @@ export class MainMapComponent implements OnInit {
             theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'yellow');
           }
 
-          const mercatoLine = mercato.nome ? `<tr><th>Nome</th><th>${mercato.nome}</th></tr>` : '';
-          const comuneLine =  mercato.comune ? `<tr><td>Citta</td><td>${mercato.comune}</td></tr>` : '';
-          const giornoLine =  mercato.giorno ? `<tr><td>Giorno</td><td>${mercato.giorno}</td></tr>` : '';
+          const mercatoLine = mercato.nome ? `<tr><th>Name</th><th>${mercato.nome}</th></tr>` : '';
+          const comuneLine =  mercato.comune ? `<tr><td>City</td><td>${mercato.comune}</td></tr>` : '';
+          const giornoLine =  mercato.giorno ? `<tr><td>Market day</td><td>${mercato.giorno}</td></tr>` : '';
           const template = '<table>' + mercatoLine + comuneLine + giornoLine + '</table>';
 
           theMarker.bindPopup(template).openPopup();
