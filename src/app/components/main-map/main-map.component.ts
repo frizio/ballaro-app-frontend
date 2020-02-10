@@ -217,7 +217,7 @@ export class MainMapComponent implements OnInit {
       (res) => {
         // console.log(res);
         if (res) {
-          let template = `<h5>Porto di ${porto} - Quantità pescato (quintali)</h5>`;
+          let template = `<h5>Port of ${porto} - Amount of fish caught (quintal unit)</h5>`;
           template += '<table>';
           for (const pescato of res) {
             const row = `<tr><td>${pescato.specie}</td><td>${pescato.quantita}</td></tr>`;
