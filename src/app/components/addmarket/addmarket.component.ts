@@ -62,7 +62,7 @@ export class AddMarketComponent implements OnInit {
     console.log('Map ngOnInit');
     this.positionService.currentPosition$.subscribe(pos => {
       if (pos !== null) {
-        if (this.currentPosition === null) {
+        if (this.currentPosition === null && this.theMap !== undefined) {
           this.marker = this.generateMarker([pos.latitude, pos.longitude], 'red').addTo(this.theMap);
           this.theMap.setView(new LatLng(pos.latitude, pos.longitude), 15);
         }
