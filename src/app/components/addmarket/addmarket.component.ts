@@ -127,11 +127,13 @@ export class AddMarketComponent implements OnInit {
     console.log(marketData);
     this.http.post('https://ballaro.herokuapp.com/api/add-market', marketData).subscribe(
       data => {
+        // console.log(data);
         this.snackBar.open('Success', null, {
           duration: 3000,
         });
       },
       error => {
+        // console.log(error);
         this.snackBar.open('Error', null, {
           duration: 3000,
         });
