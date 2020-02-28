@@ -84,25 +84,26 @@ export class MainMapComponent implements OnInit {
     this.layersControl.addBaseLayer(this.wMaps, 'Wikimedia Maps');
     this.layersControl.addTo(this.theMap);
 
-    const legend = new ( Control.extend( { options: { position: 'bottomleft' } } ) );
-    legend.onAdd = () => {
-      const div = DomUtil.create('div', 'legend');
-      const labels = [
-        'My Position',
-        'Local market',
-        'Historical market',
-        'Street market'
-      ];
-      const colors = ['red', 'green', 'orange', 'yellow'];
-      div.innerHTML = '<div><b>Legend</b></div>';
-      for (let i = 0; i < colors.length; i++) {
-        div.innerHTML += '<i style="background:' + colors[i] + '"> &nbsp; &nbsp;</i> &nbsp; &nbsp;' + labels[i] + '<br/>';
-      }
-      return div;
-    };
+    if (this.dataStore.navFlag === 'mercati' || this.dataStore.navFlag === 'map') {
+      const legend = new ( Control.extend( { options: { position: 'bottomleft' } } ) );
+      legend.onAdd = () => {
+        const div = DomUtil.create('div', 'legend');
+        const labels = [
+          'My Position',
+          'Local market',
+          'Historical market',
+          'Street market'
+        ];
+        const colors = ['red', 'green', 'orange', 'yellow'];
+        div.innerHTML = '<div><b>Legend</b></div>';
+        for (let i = 0; i < colors.length; i++) {
+          div.innerHTML += '<i style="background:' + colors[i] + '"> &nbsp; &nbsp;</i> &nbsp; &nbsp;' + labels[i] + '<br/>';
+        }
+        return div;
+      };
 
-    legend.addTo(this.theMap);
-
+      legend.addTo(this.theMap);
+    }
 
     this.currentPositionMarker =
       this.generateMarker([this.currentPosition.latitude, this.currentPosition.longitude], 'red').addTo(this.theMap);
