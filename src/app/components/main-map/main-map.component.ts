@@ -92,9 +92,10 @@ export class MainMapComponent implements OnInit {
           'My Position',
           'Local market',
           'Historical market',
-          'Street market'
+          'Street market',
+          'User market'
         ];
-        const colors = ['red', 'green', 'orange', 'yellow'];
+        const colors = ['red', 'green', 'orange', 'yellow', '#EE82EE'];
         div.innerHTML = '<div><b>Legend</b></div>';
         for (let i = 0; i < colors.length; i++) {
           div.innerHTML += '<i style="background:' + colors[i] + '"> &nbsp; &nbsp;</i> &nbsp; &nbsp;' + labels[i] + '<br/>';
@@ -175,6 +176,8 @@ export class MainMapComponent implements OnInit {
             theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'green');
           } else if (mercato.giorno.startsWith('Tutti')) {
             theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'orange');
+          } else if (mercato.isvalid === false) {
+            theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'violet');
           } else {
             theMarker = this.generateMarker([mercato.latitude, mercato.longitude], 'yellow');
           }

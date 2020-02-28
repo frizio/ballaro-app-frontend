@@ -7,4 +7,5 @@ export interface Mercato {
     latitude: number;
     longitude: number;
     giorno: string;
+    isvalid: boolean;
   }
